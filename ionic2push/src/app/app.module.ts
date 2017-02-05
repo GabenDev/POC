@@ -11,6 +11,18 @@ import { LoginPage } from '../pages/login/login';
 //import { RegisterPage } from '../pages/register/register'
 import { FacebookUsers } from '../providers/facebook-users';
 
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyCSjgYwi3EewjnCFCm564udfsurD5RIUkM",
+  authDomain: "follower-5350e.firebaseapp.com",
+  databaseURL: "https://follower-5350e.firebaseio.com",
+  storageBucket: "follower-5350e.appspot.com",
+  messagingSenderId: "340331802320"
+};
+
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': '4bdb8b69'
@@ -47,7 +59,8 @@ const cloudSettings: CloudSettings = {
   ],
   imports: [
     IonicModule.forRoot(MyApp),
-    CloudModule.forRoot(cloudSettings)
+    CloudModule.forRoot(cloudSettings),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

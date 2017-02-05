@@ -3,7 +3,8 @@ import {TodoService} from '../../providers/todo-service';
 import { NavController } from 'ionic-angular';
 import {Todo} from '../../domain/todo';
 import { TodoEditPage } from '../todo-edit/todo-edit';
-import {Observable} from 'rxjs/Observable';
+
+import { AngularFire, FirebaseListObservable} from 'angularfire2';
 
 @Component({
   selector: 'page-items',
@@ -12,9 +13,21 @@ import {Observable} from 'rxjs/Observable';
 })
 export class ItemsPage {
 
-  public todos: Observable<Todo[]>;
+  public todos: Todo[];
+  public songs: FirebaseListObservable<any>;
 
-  constructor(public nav: NavController, public todoService: TodoService) {
+  constructor(public nav: NavController, public todoService: TodoService
+    , af: AngularFire
+  ) {
+    this.songs = af.database.list('/songs');
+    console.log("Songs: ");
+
+    this.songs.forEach(song => {
+      song.forEach(item => {
+        console.log('Song:', item.title);
+      });
+    });
+
     this.loadTodos();
   }
 
@@ -33,6 +46,9 @@ export class ItemsPage {
       .subscribe(data  => {
         this.todos.push(data)
       });
+    this.songs.push({
+      title: todo
+    });
   }
 
   toggleComplete(todo: Todo) {
@@ -48,8 +64,9 @@ export class ItemsPage {
     this.todoService.delete(todo)
       .subscribe(response => {
         this.todos.splice(index, 1);
-        //this.loadTodos();
       });
+      //alert(todo.description);
+      //this.songs.remove(todo.description);
   }
 
   navToEdit(todo: Todo, index: number) {
