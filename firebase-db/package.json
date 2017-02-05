@@ -22,6 +22,7 @@
     "@ionic/storage": "1.1.7",
     "angularfire2": "^2.0.0-beta.7",
     "bower": "^1.8.0",
+    "firebase": "^3.6.8",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.0.0",
@@ -31,7 +32,7 @@
     "ionic-angular": "2.0.0-rc.5",
     "ionic-native": "2.2.11",
     "ionicons": "3.0.0",
-    "rxjs": "5.0.0-beta.12",
+    "rxjs": "^5.0.0-beta.12",
     "shelljs": "^0.7.6",
     "sw-toolbox": "3.4.0",
     "zone.js": "0.6.26"
