@@ -12,7 +12,7 @@ import {Todo} from '../domain/todo';
   for more info on providers and Angular 2 DI.
 */
 @Injectable()
-export class TodoService {
+export class MongoTodoService {
   todosUrl = "http://192.168.0.2:8080/api/todos"
 
   constructor(public http: Http) {
@@ -32,33 +32,38 @@ export class TodoService {
   }
 
   // Add a todo-edit
-  add(todo: string): Observable<Todo> {
-    let body = JSON.stringify({description: todo});
+  add(todo: string, todos : Todo[]): Observable<Todo> {
+    let newTodo = new Todo(todo);
+    let body = JSON.stringify(newTodo);
     let headers = new Headers({'Content-Type': 'application/json'});
 
     return this.http.post(this.todosUrl, body, {headers: headers})
       .map(res => res.json())
       .catch(this.handleError);
-  }
+    }
 
   // Update a todo
-  update(todo: Todo) {
+  update(itemId:string, todo:Todo) {
     let url = `${this.todosUrl}/${todo._id}`; //see mdn.io/templateliterals
     let body = JSON.stringify(todo)
     let headers = new Headers({'Content-Type': 'application/json'});
 
-    return this.http.put(url, body, {headers: headers})
+    this.http.put(url, body, {headers: headers})
       .map(() => todo) //See mdn.io/arrowfunctions
-      .catch(this.handleError);
+      .catch(this.handleError).subscribe(response => {
+          console.log('Update invoked');
+      });
   }
 
   // Delete a todo
-  delete(todo: Todo) {
+  delete(todo:Todo, index : number, todos : Todo[]) {
     let url = `${this.todosUrl}/${todo._id}`;
     let headers = new Headers({'Content-Type': 'application/json'});
 
     return this.http.delete(url, headers)
-      .catch(this.handleError);
+      .catch(this.handleError).subscribe(response => {
+        console.log('Delete invoked');
+        todos.splice(index, 1);
+      });
   }
-
 }

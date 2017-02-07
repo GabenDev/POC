@@ -1,5 +1,10 @@
 export class Todo {
-  _id: number;
-  description: string;
-  isComplete: boolean;
+  constructor(description:string) {
+    this.description = description;
+    this.isComplete = false;
+  }
+
+  _id:number;
+  description:string;
+  isComplete:boolean;
 }

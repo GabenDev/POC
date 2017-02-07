@@ -14,6 +14,8 @@ import { FacebookUsers } from '../providers/facebook-users';
 // Import the AF2 Module
 import { AngularFireModule } from 'angularfire2';
 
+import { AnimateItemSliding } from '../components/animate-item-sliding/animate-item-sliding';
+
 // AF2 Settings
 export const firebaseConfig = {
   apiKey: "AIzaSyCSjgYwi3EewjnCFCm564udfsurD5RIUkM",
@@ -55,7 +57,8 @@ const cloudSettings: CloudSettings = {
     LoginPage,
     TabsPage,
     MainPage,
-    ItemsPage
+    ItemsPage,
+    AnimateItemSliding
   ],
   imports: [
     IonicModule.forRoot(MyApp),

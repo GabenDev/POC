@@ -2,38 +2,40 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams} from 'ionic-angular';
 import {Todo} from '../../domain/todo';
-import {TodoService} from '../../providers/todo-service';
+import {MongoTodoService} from '../../providers/mongoTodoService';
 
 @Component({
   selector: 'page-todo-edit',
   templateUrl: 'todo-edit.html',
-  providers: [TodoService]
+  providers: [MongoTodoService]
 })
 export class TodoEditPage {
   public todo: Todo;    // The todo itself
   public todos: Todo[]; // The list of todos from the main page
-  public index: number; // The index of the todo we're looking at
+  public key: string; // The index of the todo we're looking at
 
-  constructor(public todoService: TodoService, public nav: NavController, public navParams: NavParams ) {
+  constructor(public todoService: MongoTodoService, public nav: NavController, public navParams: NavParams ) {
     this.todo = navParams.get('todo');
     this.todos = navParams.get('todos');
-    this.index = navParams.get('index');
+    this.key = navParams.get('key');
   }
 
-  saveTodo(updatedDescription: string) {
-    this.todo.description = updatedDescription;
-    this.todoService.update(this.todo)
-      .subscribe(response => {
-        this.nav.pop(); // go back to todo list
-      });
+  saveTodo(key:string, updatedDescription: string) {
+    //this.todo.description = updatedDescription;
+    //this.todoService.update(key, this.todo);
+    this.nav.pop();
+
+    //.subscribe(response => {
+       // go back to todo list
+    //});
   }
 
   deleteTodo() {
-    this.todoService.delete(this.todo)
-      .subscribe(response => {
-        this.todos.splice(this.index, 1); // remove the todo
-        this.nav.pop(); //go back to todo list
-      });
+    //this.todoService.delete(this.key);
+    //.subscribe(response => {
+    //  this.todos.splice(this.index, 1); // remove the todo
+    //});
+    this.nav.pop(); //go back to todo list
   }
 
   back() {
