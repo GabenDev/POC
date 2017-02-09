@@ -35,7 +35,7 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-	res.json({ message: 'hooray! welcome to our api!' });	
+	res.json({ message: 'hooray! welcome to our api!' });
 });
 
 // on routes that end in /bears
@@ -44,27 +44,17 @@ router.route('/todos')
 
 	// create a bear (accessed at POST http://localhost:8080/bears)
 	.post(function(req, res) {
-		
-		var todo = new Todo();		// create a new instance of the Todo model
-		todo.description = req.body.description;  // set the bears name (comes from the request)
-		todo.isComplete = false;
-
-		todo.save(function(err) {
-			if (err)
-				res.send(err);
-
+		var todo = new Todo().from(req);		// create a new instance of the Todo model
+		todo.default().save(function(err) {
+      handleError(err, res);
 			res.json(todo);
 		});
-
-		
 	})
 
 	// get all the bears (accessed at GET http://localhost:8080/api/bears)
 	.get(function(req, res) {
 		Todo.find(function(err, todos) {
-			if (err)
-				res.send(err);
-
+      handleError(err, res);
 			res.json(todos);
 		});
 	});
@@ -76,8 +66,7 @@ router.route('/todos/:todo_id')
 	// get the bear with that id
 	.get(function(req, res) {
 		Todo.findById(req.params.todo_id, function(err, todo) {
-			if (err)
-				res.send(err);
+      handleError(err, res);
 			res.json(todo);
 		});
 	})
@@ -85,16 +74,9 @@ router.route('/todos/:todo_id')
 	// update the bear with this id
 	.put(function(req, res) {
 		Todo.findById(req.params.todo_id, function(err, todo) {
-
-			if (err)
-				res.send(err);
-
-			todo.description = req.body.description;
-			todo.isComplete = req.body.isComplete;
-			todo.save(function(err) {
-				if (err)
-					res.send(err);
-
+			handleError(err, res);
+      todo.from(req).save(function(err) {
+        handleError(err, res);
 				res.json(todo);
 			});
 
@@ -115,6 +97,9 @@ router.route('/todos/:todo_id')
 		});
 	});
 
+  function handleError(err, res) {
+    if (err) res.send(err);
+  }
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/api', router);
