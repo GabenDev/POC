@@ -3,12 +3,17 @@ var Schema       = mongoose.Schema;
 
 var TodoSchema   = new Schema({
 	description: String,
-	isComplete : Boolean
+	isComplete : Boolean,
+  responsible: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 TodoSchema.methods.from = function(req) {
   this.description = req.body.description;
   this.isComplete = req.body.isComplete;
+  this.responsible = req.body.responsible;
   return this;
 };
 
